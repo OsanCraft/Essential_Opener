@@ -1,2 +1,2 @@
 def WordOpener:
-    return
+    return 2
