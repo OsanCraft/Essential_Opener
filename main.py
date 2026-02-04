@@ -10,13 +10,14 @@ from OfficeOpeners import (
 )
 
 
-APP_ACTIONS = [
-    ("Word", open_word),
-    ("Excel", open_excel),
-    ("PowerPoint", open_powerpoint),
-    ("OneNote", open_onenote),
-    ("Outlook", open_outlook),
-]
+APP_ACTIONS = {
+    "Word": open_word,
+    "Excel": open_excel,
+    "PowerPoint": open_powerpoint,
+    "OneNote": open_onenote,
+    "Outlook": open_outlook,
+}
+APP_LABELS = list(APP_ACTIONS.keys())
 
 
 class EssentialOpenerApp(ctk.CTk):
@@ -45,11 +46,10 @@ class EssentialOpenerApp(ctk.CTk):
         )
         title.pack(pady=(0, 16))
 
-        self.app_choice = ctk.StringVar(value=APP_ACTIONS[0][0])
-        labels = [label for label, _ in APP_ACTIONS]
+        self.app_choice = ctk.StringVar(value=APP_LABELS[0])
         self.option_menu = ctk.CTkOptionMenu(
             container,
-            values=labels,
+            values=APP_LABELS,
             variable=self.app_choice,
             fg_color="#111111",
             button_color="#1f1f1f",
@@ -68,10 +68,9 @@ class EssentialOpenerApp(ctk.CTk):
 
     def _open_selected(self):
         selected = self.app_choice.get()
-        for label, action in APP_ACTIONS:
-            if label == selected:
-                self._open(action, label)
-                return
+        action = APP_ACTIONS.get(selected)
+        if action:
+            self._open(action, selected)
 
     def _open(self, action, name):
         try:
